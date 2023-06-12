@@ -1,4 +1,5 @@
-import { useMemo } from "react";
+import { useMemo, useContext } from "react";
+import { Context } from "../context";
 
 const Preview = ({ path }) => {
   return (
@@ -16,18 +17,33 @@ const Preview = ({ path }) => {
   );
 };
 
-function UploadForm({input, onChange, onSubmit}) {
+function UploadForm() {
+
+  const { state, dispatch } = useContext(Context);
 
   const isDisabled = useMemo(() => {
-    return Object.values(input).some((value) => !value)
-  }, [input]);
+    return !!Object.values(state.input).some((value) => !value)
+  }, [state.input]);
+
+  const handleOnChange = (e) => {
+    if (e.target.type === 'file') {
+      dispatch({ type: 'setInput', payload: { file: e.target.files[0], path: URL.createObjectURL(e.target.files[0]) } });
+    } else {
+      dispatch({ type: 'setInput', payload: { title: e.target.value } });
+    }
+  }
+
+  const handleOnSubmit = (e) => {
+    e.preventDefault();
+    dispatch({ type: 'setItems', payload: { path: state.input.path } });
+  };
 
   return (
     <>
       <p className="display-6 text-center mb-3">Upload Stock Image</p>
       <div className="mb-5 d-flex align-items-center justify-content-center">
-        <Preview {...input} />
-        <form className="mb-2" style={{ textAlign: "left" }} onSubmit={onSubmit
+        <Preview {...state.input.path} />
+        <form className="mb-2" style={{ textAlign: "left" }} onSubmit={handleOnSubmit
         }>
           <div className="mb-3">
             <input
@@ -36,11 +52,11 @@ function UploadForm({input, onChange, onSubmit}) {
               name="title"
               placeholder="title"
               aria-describedby="text"
-              onChange={onChange}
+              onChange={handleOnChange}
             />
           </div>
           <div className="mb-3">
-            <input type="file" className="form-control" name="file" onChange={onChange}/>
+            <input type="file" className="form-control" name="file" onChange={handleOnChange}/>
           </div>
           <button
             type="submit"
