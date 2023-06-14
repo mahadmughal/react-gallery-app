@@ -1,5 +1,6 @@
 import { useMemo, useContext } from "react";
 import { Context } from "../context";
+import Firestore from "../Handlers/firestore";
 
 const Preview = ({ path }) => {
   return (
@@ -18,7 +19,6 @@ const Preview = ({ path }) => {
 };
 
 function UploadForm() {
-
   const { state, dispatch } = useContext(Context);
 
   const isDisabled = useMemo(() => {
@@ -35,7 +35,10 @@ function UploadForm() {
 
   const handleOnSubmit = (e) => {
     e.preventDefault();
+
+    const { writeDoc } = Firestore;
     dispatch({ type: 'setItems', payload: { path: state.input.path } });
+    writeDoc(state.input, 'stocks').then(console.log);
   };
 
   return (

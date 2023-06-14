@@ -3,13 +3,13 @@ import Layout from './components/Layout';
 import Card from './components/Card';
 import { Context } from './context';
 import { useContext, useEffect } from 'react';
-import { app } from './lib/firebase.config';
+
 
 function App() {
-  const { state } = useContext(Context);
+  const { state, read } = useContext(Context);
 
   useEffect(() => {
-    app();
+    read();
   }, []);
 
   return (
