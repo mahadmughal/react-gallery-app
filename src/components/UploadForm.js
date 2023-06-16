@@ -1,6 +1,7 @@
 import { useMemo, useContext } from "react";
 import { Context } from "../context";
 import Firestore from "../Handlers/firestore";
+import Storage from "../Handlers/storage";
 
 const Preview = ({ path }) => {
   return (
@@ -36,16 +37,24 @@ function UploadForm() {
   const handleOnSubmit = (e) => {
     e.preventDefault();
 
+    const { uploadFile, downloadFile } = Storage;
     const { writeDoc } = Firestore;
-    dispatch({ type: 'setItems', payload: { path: state.input.path } });
-    writeDoc(state.input, 'stocks').then(console.log);
+
+    uploadFile(state.input)
+      .then(downloadFile)
+      .then((url) => {
+        writeDoc({ ...state.input, path: url }, 'stocks')
+          .then(() => {
+            dispatch({ type: 'setItems', payload: { path: url } });
+          });
+      });
   };
 
   return (
     <>
       <p className="display-6 text-center mb-3">Upload Stock Image</p>
       <div className="mb-5 d-flex align-items-center justify-content-center">
-        <Preview {...state.input.path} />
+        <Preview {...state.input} />
         <form className="mb-2" style={{ textAlign: "left" }} onSubmit={handleOnSubmit
         }>
           <div className="mb-3">
