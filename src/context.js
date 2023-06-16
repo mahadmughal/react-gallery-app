@@ -5,15 +5,6 @@ const { readDocs } = Firestore;
 
 export const Context = createContext();
 
-const photos = [
-  'https://picsum.photos/id/1001/200/200',
-  'https://picsum.photos/id/1002/200/200',
-  'https://picsum.photos/id/1003/200/200',
-  'https://picsum.photos/id/1004/200/200',
-  'https://picsum.photos/id/1005/200/200',
-  'https://picsum.photos/id/1006/200/200'
-]
-
 const initialState = {
   count: 0,
   input: { title: null, file: null, path: null },
@@ -54,7 +45,7 @@ const Provider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const read = async () => {
     const items = await readDocs("stocks");
-    dispatch({ type: 'setItemsFromFirestore', payload: { items }});
+    dispatch({ type: 'setItemsFromFirestore', payload: { items: items.map((item) => item.path ) }});
   };
   return <Context.Provider value={{ state, dispatch, read }}>{children}</Context.Provider>
 }

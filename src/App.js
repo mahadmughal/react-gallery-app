@@ -17,7 +17,7 @@ function App() {
       <Layout />
       <div className='container'>
         <div className='row'>
-          {state.items.map((photo, index) => <Card key={index} src={photo} />)}
+          {state.items.map((photo, index) => <Card key={index} src={photo.path} />)}
         </div>
       </div>
     </>
