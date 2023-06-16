@@ -45,7 +45,7 @@ function UploadForm() {
       .then((url) => {
         writeDoc({ ...state.input, path: url }, 'stocks')
           .then(() => {
-            dispatch({ type: 'setItems', payload: { path: url } });
+            dispatch({ type: 'setItems', payload: { item: { ...state.input, path: url } } });
           });
       });
   };

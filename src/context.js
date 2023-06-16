@@ -22,7 +22,7 @@ const reducer = (state, action) => {
     case 'setItems':
       return {
         ...state,
-        items: [action.payload.path, ...state.items],
+        items: [action.payload.item, ...state.items],
         count: state.items.length + 1,
         input: { title: null, file: null, path: null },
         isCollapsed: !state.isCollapsed
@@ -45,7 +45,7 @@ const Provider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const read = async () => {
     const items = await readDocs("stocks");
-    dispatch({ type: 'setItemsFromFirestore', payload: { items: items.map((item) => item.path ) }});
+    dispatch({ type: 'setItemsFromFirestore', payload: { items }});
   };
   return <Context.Provider value={{ state, dispatch, read }}>{children}</Context.Provider>
 }
