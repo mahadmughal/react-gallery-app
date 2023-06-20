@@ -1,5 +1,5 @@
 import { useMemo, useContext } from "react";
-import { Context } from "../context";
+import { Context } from "../context/firebaseContext";
 import Firestore from "../Handlers/firestore";
 import Storage from "../Handlers/storage";
 

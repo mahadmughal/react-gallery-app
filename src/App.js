@@ -1,7 +1,7 @@
 import './App.css';
 import Layout from './components/Layout';
 import Card from './components/Card';
-import { Context } from './context';
+import { Context } from './context/firebaseContext';
 import { useContext, useEffect } from 'react';
 
 

@@ -1,4 +1,27 @@
 import React from "react"
+import { useAuthContext } from "../context/authContext";
+
+const LogIn = () => {
+  const { login, currentUser } = useAuthContext();
+
+  return (
+    !currentUser &&
+    <button className="btn btn-warning" onClick={login}>
+      Login
+    </button>
+  )
+};
+
+const LogOut = () => {
+  const { logout, currentUser } = useAuthContext();
+
+  return (
+    currentUser &&
+    <button className="btn btn-warning" onClick={logout}>
+      LogOut
+    </button>
+  )
+};
 
 function Navigation() {
   return (
@@ -36,6 +59,41 @@ function Search() {
   )
 }
 
+function DropDown() {
+  return (
+    <ul className="navbar nav mb-2 mb-lg-0">
+      <li className="nav-item dropdown">
+        <a
+          className="nav-link dropdown-toggle"
+          href='#'
+          id="navbarDropdown"
+          role="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          Login
+        </a>
+        <ul 
+          className="dropdown-menu"
+          aria-labelledby="navbarDropdown"
+          style={{ marginLeft: "-95px" }}
+        >
+          <li>
+            <a className="dropdown-item text-center" href='#'>
+              Profile
+            </a>
+          </li>
+          <hr/>
+          <li className="dropdown-item text-center">
+            <LogIn />
+            <LogOut />
+          </li>
+        </ul>
+      </li>
+    </ul>
+  )
+}
+
 function NavBar() {
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary">
@@ -47,6 +105,7 @@ function NavBar() {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <Navigation />
           <Search />
+          <DropDown />
         </div>
       </div>
     </nav>
