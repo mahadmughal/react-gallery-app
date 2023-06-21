@@ -21,7 +21,7 @@ const Preview = ({ path }) => {
 };
 
 function UploadForm() {
-  const { state, dispatch } = useContext(Context);
+  const { state, dispatch, read } = useContext(Context);
   const { currentUser } = useAuthContext();
 
   const isDisabled = useMemo(() => {
@@ -40,14 +40,14 @@ function UploadForm() {
     e.preventDefault();
 
     const { uploadFile, downloadFile } = Storage;
-    const { writeDoc } = Firestore;
+    const { writeDoc, readDocs } = Firestore;
 
     uploadFile(state.input)
       .then(downloadFile)
       .then((url) => {
         writeDoc({ ...state.input, path: url, user: currentUser?.displayName }, 'stocks')
           .then(() => {
-            dispatch({ type: 'setItems', payload: { item: { ...state.input, path: url, user: currentUser?.displayName } } });
+            read();
           });
       });
   };
