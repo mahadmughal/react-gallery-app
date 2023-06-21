@@ -1,5 +1,6 @@
 import { useMemo, useContext } from "react";
 import { Context } from "../context/firebaseContext";
+import { useAuthContext } from "../context/authContext";
 import Firestore from "../Handlers/firestore";
 import Storage from "../Handlers/storage";
 
@@ -21,6 +22,7 @@ const Preview = ({ path }) => {
 
 function UploadForm() {
   const { state, dispatch } = useContext(Context);
+  const { currentUser } = useAuthContext();
 
   const isDisabled = useMemo(() => {
     return !!Object.values(state.input).some((value) => !value)
@@ -43,9 +45,9 @@ function UploadForm() {
     uploadFile(state.input)
       .then(downloadFile)
       .then((url) => {
-        writeDoc({ ...state.input, path: url }, 'stocks')
+        writeDoc({ ...state.input, path: url, user: currentUser?.displayName }, 'stocks')
           .then(() => {
-            dispatch({ type: 'setItems', payload: { item: { ...state.input, path: url } } });
+            dispatch({ type: 'setItems', payload: { item: { ...state.input, path: url, user: currentUser?.displayName } } });
           });
       });
   };

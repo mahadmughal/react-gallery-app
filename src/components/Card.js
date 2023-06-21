@@ -20,7 +20,7 @@ function Card({ photo }) {
         <div className='text-center py-2'>{photo.title}</div>
         <div className='d-flex justify-content-between'>
           <div>{timestamp}</div>
-          <div>@username</div>
+          <div>{ `@${photo.user}` }</div>
         </div>
       </div>
     </div>

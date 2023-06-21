@@ -4,8 +4,7 @@ import { db } from "../lib/firebase.config";
 const Firestore = {
 
   // reading data from could firestore ...
-  readDocs: (...args) => {
-    const [collection_name] = args;
+  readDocs: () => {
     let docs = [];
     const ref = collection(db, 'stocks');
     return new Promise(async resolve => {
@@ -29,7 +28,7 @@ const Firestore = {
       const randomIndex = Math.floor(Math.random() * 100000000);
       try {
         const docRef = doc(db, "stocks", `${randomIndex}`);
-        await setDoc(docRef, { title: input.title, path: input.path, createdAt: serverTimestamp() })
+        await setDoc(docRef, { title: input.title, path: input.path, createdAt: serverTimestamp(), user: input.user })
         resolve('new doc succesfully inserted');
       } catch(e) {
         console.log(`While creating document in firestore: ${e}`);
