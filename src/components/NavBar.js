@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useMemo } from "react";
 import { useAuthContext } from "../context/authContext";
 
 const LogIn = () => {
@@ -60,6 +60,27 @@ function Search() {
 }
 
 function DropDown() {
+  const { currentUser } = useAuthContext();
+
+  const username = useMemo(() => {
+    return currentUser?.displayName || "Profile"
+  }, [currentUser]);
+
+  const avatar = useMemo(() => {
+    return (
+      currentUser
+      ? <img
+          className="avatar"
+          src={currentUser.photoURL}
+          alt={currentUser.displayName}
+          width="34"
+          height="34"
+        />
+      : "Login"
+    )
+  }, [currentUser]);
+
+
   return (
     <ul className="navbar nav mb-2 mb-lg-0">
       <li className="nav-item dropdown">
@@ -71,16 +92,16 @@ function DropDown() {
           data-bs-toggle="dropdown"
           aria-expanded="false"
         >
-          Login
+          { avatar }
         </a>
-        <ul 
+        <ul
           className="dropdown-menu"
           aria-labelledby="navbarDropdown"
           style={{ marginLeft: "-95px" }}
         >
           <li>
             <a className="dropdown-item text-center" href='#'>
-              Profile
+              { username }
             </a>
           </li>
           <hr/>
