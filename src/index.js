@@ -5,13 +5,22 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import Provider from './context/firebaseContext';
 import AuthProvider from './context/authContext';
+import NavBar from './components/NavBar';
+import Stocks from './components/Stocks';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <AuthProvider>
       <Provider>
-        <App />
+        <Router>
+          <NavBar />
+          <Routes>
+            <Route path="/" element={<App />} />
+            <Route path='/stocks' element={<Stocks />} />
+          </Routes>
+        </Router>
       </Provider>
     </AuthProvider>
   </React.StrictMode>

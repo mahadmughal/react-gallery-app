@@ -1,9 +1,8 @@
 import './App.css';
-import Layout from './components/Layout';
-import Card from './components/Card';
 import { Context } from './context/firebaseContext';
 import { useAuthContext } from './context/authContext';
 import { useContext, useEffect } from 'react';
+import List from './components/List';
 
 
 function App() {
@@ -17,10 +16,9 @@ function App() {
 
   return (
     <>
-      <Layout />
       <div className='container'>
         <div className='row'>
-          {state.items.map((item, index) => <Card key={index} photo={item} />)}
+          <List items={state.items} />
         </div>
       </div>
     </>
