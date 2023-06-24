@@ -3,7 +3,7 @@ import { db } from "../lib/firebase.config";
 
 const Firestore = {
 
-  // reading data from could firestore ...
+  // reading data from cloud firestore ...
   readDocs: () => {
     let docs = [];
     const ref = collection(db, 'stocks');
@@ -11,7 +11,7 @@ const Firestore = {
       try {
         const snapshots = await getDocs(ref);
         snapshots.forEach((doc) => {
-          const d = { ...doc.data() };
+          const d = { ...doc.data(), id: doc.id };
           docs.push(d);
         });
         resolve(docs);
