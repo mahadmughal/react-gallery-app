@@ -45,7 +45,6 @@ const Provider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const read = async () => {
     const items = await readDocs("stocks");
-    debugger
     dispatch({ type: 'setItemsFromFirestore', payload: { items }});
   };
   return <Context.Provider value={{ state, dispatch, read }}>{children}</Context.Provider>
