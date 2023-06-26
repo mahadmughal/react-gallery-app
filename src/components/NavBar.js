@@ -1,5 +1,6 @@
-import React, { useMemo } from "react";
+import React, { useContext, useMemo, useState } from "react";
 import { useAuthContext } from "../context/authContext";
+import { useFirebaseContext } from '../context/firebaseContext';
 import { Link, useLocation } from "react-router-dom";
 
 const LogIn = () => {
@@ -52,10 +53,30 @@ function Navigation() {
 }
 
 function Search() {
+  const [text, search] = useState(null);
+  const { filteredItems } = useFirebaseContext();
+
+  const handleOnChange = (e) => search(e.target.value);
+  const handleOnSubmit = (e) => {
+    e.preventDefault();
+    filteredItems(text);
+  }
+
   return (
-    <form className="d-flex" role="search">
-      <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-      <button className="btn btn-outline-success" type="submit">Search</button>
+    <form className="d-flex" role="search" onSubmit={handleOnSubmit}>
+      <input
+        className="form-control me-2"
+        type="search"
+        placeholder="Search"
+        aria-label="Search"
+        onChange={handleOnChange}
+      />
+      <button
+        className="btn btn-outline-success"
+        type="submit"
+      >
+        Search
+      </button>
     </form>
   )
 }
