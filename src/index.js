@@ -7,7 +7,23 @@ import Provider from './context/firebaseContext';
 import AuthProvider from './context/authContext';
 import NavBar from './components/NavBar';
 import Stocks from './components/Stocks';
+import SingleCard from './components/SingleCard';
+import Profile from './components/Profile';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { useAuthContext } from './context/authContext';
+
+const AppRoutes = () => {
+  const { currentUser } = useAuthContext();
+
+  return (
+    <Routes>
+      <Route path="/" element={<App />} />
+      <Route path="/images/:id" element={<SingleCard />} />
+      <Route path="/profile" element={<Profile />} />
+      { currentUser && <Route path='/stocks' element={<Stocks />} /> }
+    </Routes>
+  )
+}
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -16,10 +32,7 @@ root.render(
       <Provider>
         <Router>
           <NavBar />
-          <Routes>
-            <Route path="/" element={<App />} />
-            <Route path='/stocks' element={<Stocks />} />
-          </Routes>
+          <AppRoutes />
         </Router>
       </Provider>
     </AuthProvider>

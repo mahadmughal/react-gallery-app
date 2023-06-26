@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { useAuthContext } from "../context/authContext";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const LogIn = () => {
   const { login, currentUser } = useAuthContext();
@@ -25,14 +25,28 @@ const LogOut = () => {
 };
 
 function Navigation() {
+  const { currentUser } = useAuthContext();
+  const { pathName } = useLocation();
+
   return (
     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
       <li className="nav-item">
-        <Link className="nav-link active" aria-current="page" to="/">Home</Link>
+        <Link 
+          className={`nav-link ${pathName === '/' ? 'active' : ''}`}
+          aria-current="page"
+          to="/">
+            Home
+        </Link>
       </li>
-      <li className="nav-item">
-        <Link className="nav-link" to="/stocks" >My Stocks</Link>
-      </li>
+      { currentUser &&
+        <li className="nav-item">
+          <Link
+            className={`nav-link ${pathName === '/stocks' ? 'active' : ''}`}
+            to="/stocks">
+              My Stocks
+          </Link>
+        </li>
+      }
     </ul>
   )
 }
@@ -48,10 +62,6 @@ function Search() {
 
 function DropDown() {
   const { currentUser } = useAuthContext();
-
-  const username = useMemo(() => {
-    return currentUser?.displayName || "Profile"
-  }, [currentUser]);
 
   const avatar = useMemo(() => {
     return (
@@ -87,9 +97,9 @@ function DropDown() {
           style={{ marginLeft: "-95px" }}
         >
           <li>
-            <a className="dropdown-item text-center" href='#'>
-              { username }
-            </a>
+            { currentUser &&
+              <Link className="dropdown-item text-center" to='/profile'>Profile</Link>
+            }
           </li>
           <hr/>
           <li className="dropdown-item text-center">
