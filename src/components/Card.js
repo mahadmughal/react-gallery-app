@@ -4,7 +4,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 function Card({ id, createdAt, path, title, user }) {
 
   const timestamp = useMemo(() => {
-    const date = `${new Date(photo.createdAt.seconds * 1000)}`.split(' ');
+    const date = `${new Date(createdAt?.seconds * 1000)}`.split(' ');
     return `${date[1]} ${date[2]} ${date[2]}`;
   });
 
@@ -19,15 +19,15 @@ function Card({ id, createdAt, path, title, user }) {
       <div className='border rounded' style={{ width: '22rem' }}>
         <div style={{
           height: '220px',
-          backgroundImage: `url(${photo.path})`,
+          backgroundImage: `url(${path})`,
           backgroundSize: 'cover',
           backgroundRepeat: 'no-repeat'
         }}>
         </div>
-        <div className='text-center py-2'>{photo.title}</div>
+        <div className='text-center py-2'>{title}</div>
         <div className='d-flex justify-content-between'>
           <div>{timestamp}</div>
-          <div>{ `@${photo.user}` }</div>
+          <div>{`@${user}`}</div>
         </div>
       </div>
     </div>

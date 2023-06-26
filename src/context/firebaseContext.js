@@ -1,4 +1,4 @@
-import { createContext, useReducer } from "react";
+import { createContext, useContext, useReducer } from "react";
 import Firestore from "../Handlers/firestore";
 
 const { readDocs } = Firestore;
@@ -45,9 +45,14 @@ const Provider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const read = async () => {
     const items = await readDocs("stocks");
+    debugger
     dispatch({ type: 'setItemsFromFirestore', payload: { items }});
   };
   return <Context.Provider value={{ state, dispatch, read }}>{children}</Context.Provider>
+}
+
+export const useFirebaseContext = () =>{
+  return useContext(Context);
 }
 
 export default Provider;
