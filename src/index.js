@@ -9,6 +9,7 @@ import NavBar from './components/NavBar';
 import Stocks from './components/Stocks';
 import SingleCard from './components/SingleCard';
 import Profile from './components/Profile';
+import NotFound from './components/NotFound';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useAuthContext } from './context/authContext';
 
@@ -20,6 +21,7 @@ const AppRoutes = () => {
       <Route path="/" element={<App />} />
       <Route path="/images/:id" element={<SingleCard />} />
       <Route path="/profile" element={<Profile />} />
+      <Route path="*" element={<NotFound />}/>
       { currentUser && <Route path='/stocks' element={<Stocks />} /> }
     </Routes>
   )

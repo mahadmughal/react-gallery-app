@@ -54,13 +54,17 @@ function Navigation() {
 
 function Search() {
   const [text, search] = useState(null);
-  const { filteredItems } = useFirebaseContext();
+  const { filterItems } = useFirebaseContext();
 
-  const handleOnChange = (e) => search(e.target.value);
+  const handleOnChange = (e) =>  {
+    search(e.target.value);
+    filterItems(e.target.value);
+  };
+
   const handleOnSubmit = (e) => {
     e.preventDefault();
-    filteredItems(text);
-  }
+    filterItems(text);
+  };
 
   return (
     <form className="d-flex" role="search" onSubmit={handleOnSubmit}>
