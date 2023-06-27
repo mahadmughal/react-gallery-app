@@ -1,4 +1,4 @@
-import { createContext, useContext, useReducer } from "react";
+import { createContext, useReducer, useContext } from "react";
 import Firestore from "../Handlers/firestore";
 
 const { readDocs } = Firestore;
@@ -9,6 +9,7 @@ const initialState = {
   count: 0,
   input: { title: null, file: null, path: null },
   items: [],
+  firebaseItems: [],
   isCollapsed: false
 }
 
@@ -17,15 +18,22 @@ const reducer = (state, action) => {
     case 'setItemsFromFirestore':
       return {
         ...state,
-        items: action.payload.items
+        items: action.payload.items,
+        firebaseItems: action.payload.items
       }
     case 'setItems':
       return {
         ...state,
         items: [action.payload.item, ...state.items],
+        firebaseItems: [action.payload.item, ...state.firebaseItems],
         count: state.items.length + 1,
         input: { title: null, file: null, path: null },
         isCollapsed: !state.isCollapsed
+      }
+    case 'filteredItems':
+      return {
+        ...state,
+        items: action.payload.results
       }
     case 'setInput':
       return {
@@ -47,10 +55,24 @@ const Provider = ({ children }) => {
     const items = await readDocs("stocks");
     dispatch({ type: 'setItemsFromFirestore', payload: { items }});
   };
-  return <Context.Provider value={{ state, dispatch, read }}>{children}</Context.Provider>
+  const filteredItems = (input) => {
+    if (input === '' || !!input) {
+      dispatch({ type: 'setItems', payload: { items : state.firebaseItems } })
+    }
+
+    let list = state.firebaseItems.flat();
+    let results = list.filter((item) => {
+      const name = item.title.toLowerCase();
+      const searchInput = input.toLowerCase();
+      return name.indexOf(searchInput) > -1
+    })
+
+    dispatch({ type: 'filteredItems', payload: { results } })
+  };
+  return <Context.Provider value={{ state, dispatch, read, filteredItems }}>{children}</Context.Provider>
 }
 
-export const useFirebaseContext = () =>{
+export const useFirebaseContext = () => {
   return useContext(Context);
 }
 

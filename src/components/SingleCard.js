@@ -1,6 +1,6 @@
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { useFirebaseContext } from "../context/firebaseContext";
-import Card from "./Card";
+import Card from "../components/Card";
 
 
 const SingleCard = () => {
