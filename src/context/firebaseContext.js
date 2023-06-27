@@ -1,4 +1,4 @@
-import { createContext, useReducer, useContext } from "react";
+import { createContext, useReducer, useContext, useMemo } from "react";
 import Firestore from "../Handlers/firestore";
 
 const { readDocs } = Firestore;
@@ -55,21 +55,22 @@ const Provider = ({ children }) => {
     const items = await readDocs("stocks");
     dispatch({ type: 'setItemsFromFirestore', payload: { items }});
   };
-  const filteredItems = (input) => {
-    if (input === '' || !!input) {
-      dispatch({ type: 'setItems', payload: { items : state.firebaseItems } })
+  const filterItems = (input) => {
+    if (input === '' || !input) {
+      dispatch({ type: 'setItems', payload: { items: state.firebaseItems } })
     }
 
-    let list = state.firebaseItems.flat();
+    let list = state.firebaseItems.filter((item) => !!item);
     let results = list.filter((item) => {
       const name = item.title.toLowerCase();
-      const searchInput = input.toLowerCase();
-      return name.indexOf(searchInput) > -1
+      const searchInput = input?.toLowerCase();
+      return name.indexOf(searchInput) > -1;
     })
 
-    dispatch({ type: 'filteredItems', payload: { results } })
+    dispatch({ type: 'filteredItems', payload: { results } });
   };
-  return <Context.Provider value={{ state, dispatch, read, filteredItems }}>{children}</Context.Provider>
+
+  return <Context.Provider value={{ state, dispatch, read, filterItems }}>{children}</Context.Provider>
 }
 
 export const useFirebaseContext = () => {

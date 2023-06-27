@@ -1,12 +1,12 @@
 import './App.css';
-import { Context } from './context/firebaseContext';
+import { useFirebaseContext } from './context/firebaseContext';
 import { useAuthContext } from './context/authContext';
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import List from './components/List';
 
 
 function App() {
-  const { state, read } = useContext(Context);
+  const { state, read } = useFirebaseContext();
   const { authenticate } = useAuthContext();
 
   useEffect(() => {
@@ -18,7 +18,7 @@ function App() {
     <>
       <div className='container'>
         <div className='row'>
-          <List items={state.items} />
+          <List itemsList={state.items} />
         </div>
       </div>
     </>
