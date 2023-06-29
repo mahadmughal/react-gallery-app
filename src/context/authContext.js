@@ -1,4 +1,4 @@
-import firebaseAuth from '../Handlers/auth';
+import firebaseAuth from '../handlers/auth';
 import { createContext, useContext, useMemo, useState } from 'react';
 
 const Context = createContext();
