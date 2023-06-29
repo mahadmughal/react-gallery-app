@@ -1,8 +1,8 @@
 import { useMemo, useContext } from "react";
 import { Context } from "../context/firebaseContext";
 import { useAuthContext } from "../context/authContext";
-import Firestore from "../Handlers/firestore";
-import Storage from "../Handlers/storage";
+import Firestore from "../handlers/firestore";
+import Storage from "../handlers/storage";
 
 const Preview = ({ path }) => {
   return (
